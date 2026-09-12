@@ -22,6 +22,7 @@
     --orange: #ff7518;
     --purple: #9b5de5;
     --green: #4ade80;
+    --amber: #fbbf24;
     --red: #f87171;
     --text: #f0e9ff;
     --muted: #9a8fb0;
@@ -80,6 +81,7 @@
   .label { color: var(--muted); font-size: 0.9em; }
   .value { font-weight: 600; }
   .value.ok { color: var(--green); }
+  .value.mid { color: var(--amber); }
   .value.warn { color: var(--red); }
 
   button {
@@ -276,8 +278,10 @@
       const data = await res.json();
 
       const waterEl = document.getElementById('water-state');
-      waterEl.textContent = data.water_state;
-      waterEl.className = 'value ' + (data.water_state === 'OK' ? 'ok' : 'warn');
+      const waterLabels = { FULL: 'FULL', OK: 'FULL', LOW: 'LOW', EMPTY: 'EMPTY' };
+      const waterClasses = { FULL: 'ok', OK: 'ok', LOW: 'mid', EMPTY: 'warn' };
+      waterEl.textContent = waterLabels[data.water_state] || data.water_state;
+      waterEl.className = 'value ' + (waterClasses[data.water_state] || 'warn');
 
       document.getElementById('pump-state').textContent = data.pump_state;
       document.getElementById('last-updated').textContent =
