@@ -22,6 +22,14 @@ router.post('/logout', (req, res) => {
   res.json({ success: true });
 });
 
+// Used by the dashboard on load to skip login when the session cookie is still valid
+router.get('/session', (req, res) => {
+  if (req.session && req.session.loggedIn) {
+    return res.json({ loggedIn: true });
+  }
+  return res.json({ loggedIn: false });
+});
+
 // Middleware to protect routes — anything using this must have a valid session
 function requireAuth(req, res, next) {
   if (req.session && req.session.loggedIn) {
